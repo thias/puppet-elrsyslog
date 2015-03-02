@@ -12,7 +12,10 @@ define elrsyslog::package ( $ensure = undef ) {
       false   => 'absent',
       default => $ensure,
     }
-    package { "rsyslog-${title}": ensure => $ensure_final }
+    package { "rsyslog-${title}":
+      ensure => $ensure_final,
+      notify => Service['rsyslog'],
+    }
   }
 
 }

@@ -5,7 +5,7 @@ define elrsyslog::file (
   $source  = undef,
 ) {
 
-  file { "/etc/rsyslog.d/${prefix}-${title}":
+  file { "/etc/rsyslog.d/${prefix}-${title}.conf":
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',

@@ -16,8 +16,8 @@ class elrsyslog (
   $local5_file            = undef,
   $local6_file            = undef,
   # Extra rpm packages, individually to make it easier to override from hiera
-  $elasticsearch = undef,
-  $relp          = undef,
+  $elasticsearch          = undef,
+  $relp                   = undef,
 ) {
 
   package { 'rsyslog': ensure => 'installed' }
