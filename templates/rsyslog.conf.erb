@@ -1,0 +1,140 @@
+<% elv = @elv.to_i -%>
+<% if elv >= 7 -%>
+# rsyslog configuration file
+<% else -%>
+# rsyslog v5 configuration file
+<% end -%>
+
+# For more information see /usr/share/doc/rsyslog-*/rsyslog_conf.html
+# If you experience problems, see http://www.rsyslog.com/doc/troubleshoot.html
+<% if @preservefqdn -%>
+
+# Override legacy of short names only
+$PreserveFQDN on
+<% end -%>
+
+#### MODULES ####
+
+<% if elv >= 7 -%>
+# The imjournal module bellow is now used as a message source instead of imuxsock.
+$ModLoad imjournal # provides access to the systemd journal
+#$ModLoad imklog # reads kernel messages (the same are read from journald)
+<% else -%>
+$ModLoad imuxsock # provides support for local system logging (e.g. via logger command)
+$ModLoad imklog   # provides kernel logging support (previously done by rklogd)
+<% end -%>
+#$ModLoad immark  # provides --MARK-- message capability
+
+# Provides UDP syslog reception
+#$ModLoad imudp
+#$UDPServerRun 514
+
+# Provides TCP syslog reception
+#$ModLoad imtcp
+#$InputTCPServerRun 514
+
+
+#### GLOBAL DIRECTIVES ####
+
+<% if elv >= 7 or @workdirectory -%>
+# Where to place auxiliary files
+$WorkDirectory /var/lib/rsyslog
+
+<% end -%>
+# Use default timestamp format
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+
+# File syncing capability is disabled by default. This feature is usually not required,
+# not useful and an extreme performance hit
+#$ActionFileEnableSync on
+
+# Include all config files in /etc/rsyslog.d/
+$IncludeConfig /etc/rsyslog.d/*.conf
+
+<% if elv >= 7 -%>
+# Turn off message reception via local log socket;
+# local messages are retrieved through imjournal now.
+$OmitLocalLogging on
+
+# File to store the position in the journal
+$IMJournalStateFile imjournal.state
+
+<% end -%>
+
+#### RULES ####
+
+# Log all kernel messages to the console.
+# Logging much else clutters up the screen.
+#kern.*                                                 /dev/console
+
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+<%= @rules_messages_default %><% if !@rules_messages_default.empty? and !@rules_messages_extra.empty? %>;<% end %><% if @rules_messages_extra %><%= @rules_messages_extra %><% end %>                /var/log/messages
+
+# The authpriv file has restricted access.
+authpriv.*                                              /var/log/secure
+
+# Log all the mail messages in one place.
+mail.*                                                  -/var/log/maillog
+
+
+# Log cron stuff
+cron.*                                                  /var/log/cron
+
+# Everybody gets emergency messages
+<% if elv >= 7 -%>
+*.emerg                                                 :omusrmsg:*
+<% else -%>
+*.emerg                                                 *
+<% end -%>
+
+# Save news errors of level crit and higher in a special file.
+uucp,news.crit                                          /var/log/spooler
+
+# Save boot messages also to boot.log
+local7.*                                                /var/log/boot.log
+
+<% if @local0_file or @local1_file or @local2_file or @local3_file or @local4_file or @local5_file or @local6_file -%>
+# Custom local message files
+<% if @local0_file -%>
+local0.*                                                /var/log/<%= @local0_file %>
+<% end -%>
+<% if @local1_file -%>
+local1.*                                                /var/log/<%= @local1_file %>
+<% end -%>
+<% if @local2_file -%>
+local2.*                                                /var/log/<%= @local2_file %>
+<% end -%>
+<% if @local3_file -%>
+local3.*                                                /var/log/<%= @local3_file %>
+<% end -%>
+<% if @local4_file -%>
+local4.*                                                /var/log/<%= @local4_file %>
+<% end -%>
+<% if @local5_file -%>
+local5.*                                                /var/log/<%= @local5_file %>
+<% end -%>
+<% if @local6_file -%>
+local6.*                                                /var/log/<%= @local6_file %>
+<% end -%>
+<% end -%>
+
+# ### begin forwarding rule ###
+# The statement between the begin ... end define a SINGLE forwarding
+# rule. They belong together, do NOT split them. If you create multiple
+# forwarding rules, duplicate the whole block!
+# Remote Logging (we use TCP for reliable delivery)
+#
+# An on-disk queue is created for this action. If the remote host is
+# down, messages are spooled to disk and sent when it is up again.
+<% if elv < 7 -%>
+#$WorkDirectory /var/lib/rsyslog # where to place spool files
+<% end -%>
+#$ActionQueueFileName fwdRule1 # unique name prefix for spool files
+#$ActionQueueMaxDiskSpace 1g   # 1gb space limit (use as much as possible)
+#$ActionQueueSaveOnShutdown on # save messages to disk on shutdown
+#$ActionQueueType LinkedList   # run asynchronously
+#$ActionResumeRetryCount -1    # infinite retries if host is down
+# remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
+#*.* @@remote-host:514
+# ### end of the forwarding rule ###
