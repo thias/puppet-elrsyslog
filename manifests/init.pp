@@ -2,6 +2,7 @@
 #
 class elrsyslog (
   $conf_d_purge           = false,
+  $systemd_listen_file    = true,
   # rsyslog.conf parameters
   $preservefqdn           = false,
   $workdirectory          = undef,
@@ -45,7 +46,17 @@ class elrsyslog (
     mode    => '0755',
     recurse => $conf_d_purge,
     purge   => $conf_d_purge,
+    # el7 glusterfs-libs creates gluster.conf.example
+    ignore  => '*.example',
     require => Package['rsyslog'],
+  }
+
+  # Leave the systemd /etc/rsyslog.d/listen.conf file alone
+  if $elv >= 7 and $systemd_listen_file {
+    elrsyslog::file { 'listen':
+      prefix => false,
+      content => "\$SystemLogSocketName /run/systemd/journal/syslog\n",
+    }
   }
 
   # Additional rpm packages
