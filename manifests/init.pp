@@ -6,16 +6,6 @@ class elrsyslog (
   # rsyslog.conf parameters
   $preservefqdn           = false,
   $workdirectory          = undef,
-  $rules_messages_default = '*.info;mail.none;authpriv.none;cron.none',
-  $rules_messages_extra   = '',
-  $rules_extra            = {},
-  $local0_file            = undef,
-  $local1_file            = undef,
-  $local2_file            = undef,
-  $local3_file            = undef,
-  $local4_file            = undef,
-  $local5_file            = undef,
-  $local6_file            = undef,
   # Extra rpm packages, individually to make it easier to override from hiera
   $elasticsearch          = undef,
   $relp                   = undef,

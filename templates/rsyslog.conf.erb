@@ -71,7 +71,7 @@ $IMJournalStateFile imjournal.state
 
 # Log anything (except mail) of level info or higher.
 # Don't log private authentication messages!
-<%= @rules_messages_default %><% if !@rules_messages_default.empty? and !@rules_messages_extra.empty? %>;<% end %><% if @rules_messages_extra %><%= @rules_messages_extra %><% end %>                /var/log/messages
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
 
 # The authpriv file has restricted access.
 authpriv.*                                              /var/log/secure
@@ -96,30 +96,6 @@ uucp,news.crit                                          /var/log/spooler
 # Save boot messages also to boot.log
 local7.*                                                /var/log/boot.log
 
-<% if @local0_file or @local1_file or @local2_file or @local3_file or @local4_file or @local5_file or @local6_file -%>
-# Custom local message files
-<% if @local0_file -%>
-local0.*                                                /var/log/<%= @local0_file %>
-<% end -%>
-<% if @local1_file -%>
-local1.*                                                /var/log/<%= @local1_file %>
-<% end -%>
-<% if @local2_file -%>
-local2.*                                                /var/log/<%= @local2_file %>
-<% end -%>
-<% if @local3_file -%>
-local3.*                                                /var/log/<%= @local3_file %>
-<% end -%>
-<% if @local4_file -%>
-local4.*                                                /var/log/<%= @local4_file %>
-<% end -%>
-<% if @local5_file -%>
-local5.*                                                /var/log/<%= @local5_file %>
-<% end -%>
-<% if @local6_file -%>
-local6.*                                                /var/log/<%= @local6_file %>
-<% end -%>
-<% end -%>
 
 # ### begin forwarding rule ###
 # The statement between the begin ... end define a SINGLE forwarding
