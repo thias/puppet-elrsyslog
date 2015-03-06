@@ -1,4 +1,4 @@
-# Main class
+# Main class, can be safely included on all RHEL nodes.
 #
 class elrsyslog (
   $conf_d_purge           = false,
@@ -19,7 +19,7 @@ class elrsyslog (
     require => Package['rsyslog'],
   }
 
-  $elv = $operatingsystemmajrelease
+  $elv = $::operatingsystemmajrelease
   file { '/etc/rsyslog.conf':
     owner   => 'root',
     group   => 'root',
@@ -44,7 +44,7 @@ class elrsyslog (
   # Leave the systemd /etc/rsyslog.d/listen.conf file alone
   if $elv >= 7 and $systemd_listen_file {
     elrsyslog::file { 'listen':
-      prefix => false,
+      prefix  => false,
       content => "\$SystemLogSocketName /run/systemd/journal/syslog\n",
     }
   }

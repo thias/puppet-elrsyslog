@@ -1,3 +1,5 @@
+# Simple type to wrap around normal file in a useful way (deps, restart).
+#
 define elrsyslog::file (
   $ensure  = 'file',
   $prefix  = '50',

@@ -1,0 +1,33 @@
+{
+  "name": "thias-elrsyslog",
+  "version": "1.0.0",
+  "author": "Matthias Saou",
+  "license": "Apache-2.0",
+  "summary": "Rsyslog module for Enterprise Linux",
+  "source": "https://github.com/thias/puppet-elrsyslog",
+  "project_page": "https://forge.puppetlabs.com/thias/elrsyslog",
+  "issues_url": "https://github.com/thias/puppet-elrsyslog/issues",
+  "tags": ["syslog", "rsyslog"],
+  "operatingsystem_support": [
+    {
+    "operatingsystem": "RedHat",
+    "operatingsystemrelease": [ "6", "7" ]
+    },
+    {
+    "operatingsystem": "CentOS",
+    "operatingsystemrelease": [ "6", "7" ]
+    }
+  ],
+  "requirements": [
+    {
+    "name": "pe",
+    "version_requirement": "3.x"
+    },
+    {
+    "name": "puppet",
+    "version_requirement": ">=2.7.20 <4.0.0"
+    }
+  ],
+  "description": "Rsyslog module for Red Hat Enterprise Linux and clones.",
+  "dependencies": []
+}
