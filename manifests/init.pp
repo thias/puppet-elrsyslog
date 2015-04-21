@@ -42,7 +42,7 @@ class elrsyslog (
   }
 
   # Leave the systemd /etc/rsyslog.d/listen.conf file alone
-  if $elv >= 7 and $systemd_listen_file {
+  if versioncmp($elv, '7') >= 0 and $systemd_listen_file {
     elrsyslog::file { 'listen':
       prefix  => false,
       content => "\$SystemLogSocketName /run/systemd/journal/syslog\n",
