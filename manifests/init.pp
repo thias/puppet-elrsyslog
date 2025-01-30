@@ -19,7 +19,7 @@ class elrsyslog (
     require => Package['rsyslog'],
   }
 
-  $elv = $::operatingsystemmajrelease
+  $elv = $facts['os']['release']['major']
   file { '/etc/rsyslog.conf':
     owner   => 'root',
     group   => 'root',
@@ -42,7 +42,7 @@ class elrsyslog (
   }
 
   # Leave the systemd /etc/rsyslog.d/listen.conf file alone
-  if versioncmp($elv, '7') >= 0 and $systemd_listen_file {
+  if versioncmp($elv, '7') >= 0 and versioncmp($elv, '9') != 0 and $systemd_listen_file {
     elrsyslog::file { 'listen':
       prefix  => false,
       content => "\$SystemLogSocketName /run/systemd/journal/syslog\n",
