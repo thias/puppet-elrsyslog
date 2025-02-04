@@ -1,3 +1,4 @@
+#### 2025-02-04 - 1.0.2
 * Switch to using module imuxsock syntax on RHEL9.
 * Remove legacy facts usage.
 

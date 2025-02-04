@@ -1,6 +1,6 @@
 {
   "name": "thias-elrsyslog",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Matthias Saou",
   "license": "Apache-2.0",
   "summary": "Rsyslog module for Red Hat Enterprise Linux and clones.",
@@ -11,17 +11,17 @@
   "operatingsystem_support": [
     {
     "operatingsystem": "RedHat",
-    "operatingsystemrelease": [ "6", "7" ]
+    "operatingsystemrelease": [ "6", "7", "8", "9" ]
     },
     {
     "operatingsystem": "CentOS",
-    "operatingsystemrelease": [ "6", "7" ]
+    "operatingsystemrelease": [ "6", "7", "8", "9" ]
     }
   ],
   "requirements": [
     {
     "name": "puppet",
-    "version_requirement": ">=2.7.20 <4.1.0"
+    "version_requirement": ">=2.7.20 <9.0.0"
     }
   ],
   "dependencies": []
