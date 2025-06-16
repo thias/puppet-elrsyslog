@@ -1,6 +1,6 @@
 {
   "name": "thias-elrsyslog",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Matthias Saou",
   "license": "Apache-2.0",
   "summary": "Rsyslog module for Red Hat Enterprise Linux and clones.",
@@ -11,11 +11,11 @@
   "operatingsystem_support": [
     {
     "operatingsystem": "RedHat",
-    "operatingsystemrelease": [ "6", "7", "8", "9" ]
+    "operatingsystemrelease": [ "6", "7", "8", "9", "10" ]
     },
     {
     "operatingsystem": "CentOS",
-    "operatingsystemrelease": [ "6", "7", "8", "9" ]
+    "operatingsystemrelease": [ "6", "7", "8", "9", "10" ]
     }
   ],
   "requirements": [

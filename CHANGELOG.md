@@ -1,3 +1,4 @@
+#### 2025-06-16 - 1.0.3
 * Fix configuration on RHEL10+ by using a new template.
 * Remove /etc/rsyslog.d/listen.conf on RHEL8 where it never was.
 
