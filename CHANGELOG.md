@@ -1,3 +1,6 @@
+* Fix configuration on RHEL10+ by using a new template.
+* Remove /etc/rsyslog.d/listen.conf on RHEL8 where it never was.
+
 #### 2025-02-04 - 1.0.2
 * Switch to using module imuxsock syntax on RHEL9.
 * Remove legacy facts usage.

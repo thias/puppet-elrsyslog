@@ -20,11 +20,17 @@ class elrsyslog (
   }
 
   $elv = $facts['os']['release']['major']
+  # Stop trying to have a single template handle all EL versions
+  if versioncmp($elv, '10') >= 0 {
+    $rsyslog_template = 'rsyslog-el10.conf.erb'
+  } else {
+    $rsyslog_template = 'rsyslog.conf.erb'
+  }
   file { '/etc/rsyslog.conf':
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template("${module_name}/rsyslog.conf.erb"),
+    content => template("${module_name}/${rsyslog_template}"),
     require => Package['rsyslog'],
     notify  => Service['rsyslog'],
   }
@@ -41,8 +47,8 @@ class elrsyslog (
     require => Package['rsyslog'],
   }
 
-  # Leave the systemd /etc/rsyslog.d/listen.conf file alone
-  if versioncmp($elv, '7') >= 0 and versioncmp($elv, '9') != 0 and $systemd_listen_file {
+  # Leave the systemd /etc/rsyslog.d/listen.conf file from systemd rpm alone
+  if versioncmp($elv, '7') == 0 and $systemd_listen_file {
     elrsyslog::file { 'listen':
       prefix  => false,
       content => "\$SystemLogSocketName /run/systemd/journal/syslog\n",
